@@ -27,7 +27,7 @@ dependencies:
   - brotlipy=0.7.0
   - bzip2=1.0.8
   - c-ares=1.18.1
-  - ca-certificates=2021.10.26
+  - ca-certificates=2021.10.8
   - cachetools=4.2.4
   - captum=0.4.0
   - catalogue=2.0.6
@@ -46,6 +46,7 @@ dependencies:
   - debugpy=1.4.1
   - decorator=5.1.0
   - defusedxml=0.7.1
+  - easygui=0.98.1
   - entrypoints=0.3
   - ffmpeg=4.3
   - fonttools=4.25.0
@@ -223,4 +224,3 @@ dependencies:
     - torch-summary==1.4.5
     - torch-tb-profiler==0.3.1
     - torchsummary==1.5.1
-prefix: /home/shstan/anaconda3/envs/pytorch_base
