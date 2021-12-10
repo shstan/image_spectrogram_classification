@@ -5,6 +5,7 @@ import torchvision.transforms as T
 import pytorch_lightning as pl
 from sklearn.metrics import roc_auc_score, f1_score, accuracy_score
 from torchvision import models
+from models.utils import mixup_criterion, mixup_data
 from transforms.transform import IdentityTransform
 
 def stat_format(info_dict):
@@ -120,6 +121,22 @@ class CNN_classifier(pl.LightningModule):
                     self.best_val_stats[key] = (val_log_info[key], self.last_epoch)
         print("best_stat:", stat_best_format(self.best_val_stats)) 
         self.last_epoch += 1
+
+
+class CNN_classifier_MixUp(CNN_classifier):
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        alpha = np.random.uniform(0.1, 0.4)
+        x_mixed, y_a, y_b,lam =  mixup_data(x,y.float(),
+                                            alpha,
+                                            device=(x.device))
+        logits = self(x_mixed)
+        pred = logits.flatten()
+        loss = mixup_criterion(self.criterion, pred, y_a, y_b, lam)
+        train_loss_log={"train_loss_batch":loss.item()}
+        self.log('train_loss', train_loss_log, on_step=True, on_epoch=True)
+        return loss
+
 
 
 class SimSiam(pl.LightningModule):
